@@ -74,6 +74,82 @@
   size();
   addEventListener('resize', size);
 
+
+  /* ---------- music: starts on Tap to Open from 0:13, slow fade in ---------- */
+  var song = document.getElementById('song');
+  var mBtn = document.getElementById('musicBtn');
+  var START = 13, VOL = 0.85;
+  var actx = null, gain = null, wantMusic = true, firstFade = true, userOff = false;
+  try { if (localStorage.getItem('sdMusicOff') === '1') wantMusic = false; } catch (e) {}
+
+  function fadeTo(v, sec, done) {
+    if (gain) {
+      var t = actx.currentTime;
+      gain.gain.cancelScheduledValues(t);
+      gain.gain.setValueAtTime(gain.gain.value, t);
+      gain.gain.linearRampToValueAtTime(v, t + sec);
+      if (done) setTimeout(done, sec * 1000 + 30);
+    } else {
+      var from = song.volume, steps = Math.max(1, Math.round(sec * 30)), k = 0;
+      var iv = setInterval(function () {
+        k++; song.volume = Math.min(1, Math.max(0, from + (v - from) * k / steps));
+        if (k >= steps) { clearInterval(iv); if (done) done(); }
+      }, 1000 / 30);
+    }
+  }
+  function ensureGraph() {
+    if (actx) { if (actx.state === 'suspended') actx.resume(); return; }
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      actx = new AC();
+      var src = actx.createMediaElementSource(song);
+      gain = actx.createGain();
+      gain.gain.value = 0;
+      src.connect(gain);
+      gain.connect(actx.destination);
+    } catch (e) { actx = null; gain = null; }
+  }
+  function seekStart() { try { if (song.currentTime < START) song.currentTime = START; } catch (e) {} }
+  song.addEventListener('loadedmetadata', seekStart);
+  song.addEventListener('ended', function () { song.currentTime = START; song.play(); });
+  song.addEventListener('playing', function () {
+    if (userOff) { song.pause(); return; }
+    if (song.currentTime < START - 0.5) seekStart();
+    mBtn.classList.add('playing'); mBtn.classList.remove('off'); mBtn.setAttribute('aria-pressed', 'true');
+    if (firstFade) { firstFade = false; fadeTo(VOL, 4.5); }
+  });
+  song.addEventListener('pause', function () { mBtn.classList.remove('playing'); mBtn.setAttribute('aria-pressed', 'false'); });
+
+  function playMusic() {
+    userOff = false;
+    ensureGraph();
+    if (gain) gain.gain.value = 0; else song.volume = 0;
+    firstFade = true;
+    seekStart();
+    var p = song.play();
+    if (p && p.catch) p.catch(function () { mBtn.classList.add('off'); });
+  }
+  function stopMusic() {
+    userOff = true;
+    fadeTo(0, 0.6, function () { song.pause(); });
+    mBtn.classList.add('off');
+  }
+  mBtn.addEventListener('click', function () {
+    if (song.paused) {
+      playMusic();
+      try { localStorage.removeItem('sdMusicOff'); } catch (e) {}
+    } else {
+      stopMusic();
+      try { localStorage.setItem('sdMusicOff', '1'); } catch (e) {}
+    }
+  });
+  var pausedByHide = false;
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden && !song.paused) { pausedByHide = true; song.pause(); }
+    else if (!document.hidden && pausedByHide) { pausedByHide = false; song.play(); }
+  });
+
   /* ---------- gate ---------- */
   var gate = document.getElementById('gate');
   var opened = false;
@@ -81,6 +157,8 @@
     if (opened) return;
     opened = true;
     gate.classList.add('opening');
+    mBtn.classList.add('show');
+    if (wantMusic) playMusic(); else mBtn.classList.add('off');
     document.body.classList.remove('locked');
     window.scrollTo(0, 0);
     shower(innerWidth > 900 ? 140 : 90, 7000);
