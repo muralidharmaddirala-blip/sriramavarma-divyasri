@@ -1,7 +1,7 @@
-@font-face{font-family:"Sirivennela";src:url(assets/fonts/Sirivennela.woff2?v=2) format("woff2");font-display:swap}
-@font-face{font-family:"Veturi";src:url(assets/fonts/Veturi.woff2?v=2) format("woff2");font-display:swap}
-@font-face{font-family:"Suravaram";src:url(assets/fonts/Suravaram.woff2?v=2) format("woff2");font-display:swap}
-@font-face{font-family:"NATS";src:url(assets/fonts/NATS.woff2?v=2) format("woff2");font-display:swap}
+@font-face{font-family:"Sirivennela";src:url(assets/fonts/Sirivennela.woff2?v=3) format("woff2");font-display:swap}
+@font-face{font-family:"Veturi";src:url(assets/fonts/Veturi.woff2?v=3) format("woff2");font-display:swap}
+@font-face{font-family:"Suravaram";src:url(assets/fonts/Suravaram.woff2?v=3) format("woff2");font-display:swap}
+@font-face{font-family:"NATS";src:url(assets/fonts/NATS.woff2?v=3) format("woff2");font-display:swap}
 
 :root{
   --cream:#F7EFE2; --paper:#FFF9EE; --maroon:#7A1424; --kumkum:#A4182C;
@@ -268,7 +268,7 @@ main{position:relative}
   pointer-events:none;opacity:0;transition:opacity .6s ease;will-change:transform}
 .parrot.on{opacity:1}
 .parrot>*{transform:scaleX(var(--fx,1))}
-.parrot-fly{position:absolute;inset:0;background:url(assets/img/parrot-fly.webp?v=2) 0 0/400% 100% no-repeat;transition:opacity .25s}
+.parrot-fly{position:absolute;inset:0;background:url(assets/img/parrot-fly.webp?v=3) 0 0/400% 100% no-repeat;transition:opacity .25s}
 .parrot-perch{position:absolute;left:14%;bottom:-18%;width:72%;opacity:0;transition:opacity .3s}
 .parrot.rest .parrot-fly{opacity:0}
 .parrot.rest .parrot-perch{opacity:1;animation:perch 3.2s ease-in-out infinite}
@@ -311,3 +311,4 @@ main{position:relative}
   .gate-title{font-size:clamp(36px,10.5vw,60px);margin-top:10px}
   .gate-date{margin-bottom:16px}
 }
+.cue .en{font-weight:600;font-size:14px;letter-spacing:.16em;text-transform:uppercase}
