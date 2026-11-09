@@ -1,7 +1,7 @@
-@font-face{font-family:"Sirivennela";src:url(assets/fonts/Sirivennela.woff2?v=4) format("woff2");font-display:swap}
-@font-face{font-family:"Veturi";src:url(assets/fonts/Veturi.woff2?v=4) format("woff2");font-display:swap}
-@font-face{font-family:"Suravaram";src:url(assets/fonts/Suravaram.woff2?v=4) format("woff2");font-display:swap}
-@font-face{font-family:"NATS";src:url(assets/fonts/NATS.woff2?v=4) format("woff2");font-display:swap}
+@font-face{font-family:"Sirivennela";src:url(assets/fonts/Sirivennela.woff2?v=5) format("woff2");font-display:swap}
+@font-face{font-family:"Veturi";src:url(assets/fonts/Veturi.woff2?v=5) format("woff2");font-display:swap}
+@font-face{font-family:"Suravaram";src:url(assets/fonts/Suravaram.woff2?v=5) format("woff2");font-display:swap}
+@font-face{font-family:"NATS";src:url(assets/fonts/NATS.woff2?v=5) format("woff2");font-display:swap}
 
 :root{
   --cream:#F7EFE2; --paper:#FFF9EE; --maroon:#7A1424; --kumkum:#A4182C;
@@ -268,7 +268,7 @@ main{position:relative}
   pointer-events:none;opacity:0;transition:opacity .6s ease;will-change:transform}
 .parrot.on{opacity:1}
 .parrot>*{transform:scaleX(var(--fx,1))}
-.parrot-fly{position:absolute;inset:0;background:url(assets/img/parrot-fly.webp?v=4) 0 0/400% 100% no-repeat;transition:opacity .25s}
+.parrot-fly{position:absolute;inset:0;background:url(assets/img/parrot-fly.webp?v=5) 0 0/400% 100% no-repeat;transition:opacity .25s}
 .parrot-perch{position:absolute;left:14%;bottom:-18%;width:72%;opacity:0;transition:opacity .3s}
 .parrot.rest .parrot-fly{opacity:0}
 .parrot.rest .parrot-perch{opacity:1;animation:perch 3.2s ease-in-out infinite}
@@ -303,9 +303,11 @@ main{position:relative}
   .lotus-border img{width:min(100%,1200px);margin-left:50%}
 }
 
-.btn-en{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:19px;letter-spacing:.14em;text-transform:uppercase;padding:12px 34px}
+.btn-en{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:13px;letter-spacing:.2em;text-transform:uppercase;min-height:36px;padding:6px 20px 6px calc(20px + .2em)}
+.gate .btn-glow{animation-name:pulse-sm}
+@keyframes pulse-sm{0%,100%{box-shadow:0 0 0 1.5px rgba(217,178,94,.9),0 6px 16px rgba(122,60,20,.28),0 0 0 0 rgba(233,169,58,.5)}50%{box-shadow:0 0 0 1.5px rgba(217,178,94,.9),0 6px 16px rgba(122,60,20,.28),0 0 0 8px rgba(233,169,58,0)}}
 .gate{cursor:pointer}
-@media (min-aspect-ratio:1/1){.gate .btn-en{font-size:max(14px,min(19px,3svh))}}
+@media (min-aspect-ratio:1/1){.gate .btn-en{font-size:max(12px,min(14px,2.2svh));min-height:min(40px,6.5svh)}}
 @media (max-aspect-ratio:1/1) and (max-height:700px){
   .gate-inner{margin-top:5svh}
   .gate-title{font-size:clamp(36px,10.5vw,60px);margin-top:10px}

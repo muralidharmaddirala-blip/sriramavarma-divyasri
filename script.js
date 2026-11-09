@@ -78,7 +78,7 @@
   /* ---------- music: starts on Tap to Open from 0:13, slow fade in ---------- */
   var song = document.getElementById('song');
   var mBtn = document.getElementById('musicBtn');
-  var START = 13, VOL = 0.85;
+  var START = 0, VOL = 0.85; // file is pre-trimmed: it already begins at 0:13 of the song
   var actx = null, gain = null, wantMusic = true, firstFade = true, userOff = false;
   try { if (localStorage.getItem('sdMusicOff') === '1') wantMusic = false; } catch (e) {}
 
@@ -98,6 +98,7 @@
     }
   }
   function ensureGraph() {
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
     if (actx) { if (actx.state === 'suspended') actx.resume(); return; }
     try {
       var AC = window.AudioContext || window.webkitAudioContext;
@@ -115,8 +116,7 @@
   song.addEventListener('ended', function () { song.currentTime = START; song.play(); });
   song.addEventListener('playing', function () {
     if (userOff) { song.pause(); return; }
-    if (song.currentTime < START - 0.5) seekStart();
-    mBtn.classList.add('playing'); mBtn.classList.remove('off'); mBtn.setAttribute('aria-pressed', 'true');
+        mBtn.classList.add('playing'); mBtn.classList.remove('off'); mBtn.setAttribute('aria-pressed', 'true');
     if (firstFade) { firstFade = false; fadeTo(VOL, 4.5); }
   });
   song.addEventListener('pause', function () { mBtn.classList.remove('playing'); mBtn.setAttribute('aria-pressed', 'false'); });
