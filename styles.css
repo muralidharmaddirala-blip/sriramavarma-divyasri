@@ -1,7 +1,7 @@
-@font-face{font-family:"Sirivennela";src:url(assets/fonts/Sirivennela.woff2?v=1) format("woff2");font-display:swap}
-@font-face{font-family:"Veturi";src:url(assets/fonts/Veturi.woff2?v=1) format("woff2");font-display:swap}
-@font-face{font-family:"Suravaram";src:url(assets/fonts/Suravaram.woff2?v=1) format("woff2");font-display:swap}
-@font-face{font-family:"NATS";src:url(assets/fonts/NATS.woff2?v=1) format("woff2");font-display:swap}
+@font-face{font-family:"Sirivennela";src:url(assets/fonts/Sirivennela.woff2?v=2) format("woff2");font-display:swap}
+@font-face{font-family:"Veturi";src:url(assets/fonts/Veturi.woff2?v=2) format("woff2");font-display:swap}
+@font-face{font-family:"Suravaram";src:url(assets/fonts/Suravaram.woff2?v=2) format("woff2");font-display:swap}
+@font-face{font-family:"NATS";src:url(assets/fonts/NATS.woff2?v=2) format("woff2");font-display:swap}
 
 :root{
   --cream:#F7EFE2; --paper:#FFF9EE; --maroon:#7A1424; --kumkum:#A4182C;
@@ -56,10 +56,10 @@ a{color:inherit}
   transition:opacity .6s ease,transform .8s ease}
 .crest{font-family:var(--crest);color:var(--kumkum);font-size:clamp(20px,5.4vw,26px);letter-spacing:.04em}
 .bless{font-size:clamp(12.5px,3.5vw,15px);color:var(--ink-2);margin-top:4px}
-.gate-title{font-family:var(--display);font-weight:400;color:var(--maroon);line-height:1.15;margin:clamp(14px,3svh,26px) 0 4px;
-  font-size:clamp(44px,13.5vw,84px);text-shadow:0 2px 0 rgba(255,255,255,.6)}
+.gate-title{font-family:var(--head);font-weight:400;color:var(--maroon);line-height:1.25;margin:clamp(14px,3svh,26px) 0 4px;
+  font-size:clamp(40px,12vw,76px);text-shadow:0 2px 0 rgba(255,255,255,.6)}
 .gate-title span{display:block}
-.gate-title span+span{color:var(--gold);font-size:.92em}
+.gate-title span+span{color:var(--gold);font-size:.9em}
 .gate-lotus{width:76px;height:38px;color:var(--saffron);margin:6px auto 2px;display:block}
 .gate-names{font-family:var(--display);color:var(--maroon);font-size:clamp(22px,6.4vw,34px);line-height:1.3}
 .gate-names i{font-style:normal;color:var(--saffron);font-size:.7em;margin:0 .25em;vertical-align:.12em}
@@ -203,7 +203,7 @@ main{position:relative}
   .gate-inner{width:min(56vw,640px);margin-top:9svh}
   .crest{font-size:min(26px,4svh)}
   .bless{font-size:max(11px,min(15px,2.5svh))}
-  .gate-title{font-size:min(84px,10svh);line-height:1.05;margin:1.4svh 0 0}
+  .gate-title{font-size:min(76px,9svh);line-height:1.15;margin:1.4svh 0 0}
   .gate-lotus{width:min(76px,9svh);height:min(38px,4.5svh);margin:.8svh auto .2svh}
   .gate-names{font-size:min(34px,4.8svh)}
   .gate-date{font-size:max(11px,min(16px,2.5svh));margin:.6svh 0 2.6svh}
@@ -215,4 +215,99 @@ main{position:relative}
   .gate-title{font-size:13svh}
   .gate-title span{display:inline}
   .gate-title span+span{margin-left:.25em}
+}
+
+/* ================= v2: English accents ================= */
+.en{font-family:"Cormorant Garamond",Georgia,serif}
+.en-caps{text-transform:uppercase;letter-spacing:.3em;font-weight:600;font-size:12px;color:var(--gold)}
+.en-script{font-style:italic;font-weight:500;color:var(--ink-2);font-size:clamp(18px,5vw,24px)}
+.eyebrow{margin:0 0 4px;padding-left:.3em}
+.gate-en{margin-top:8px;font-size:clamp(11px,3.1vw,13px)}
+.gate-date .en{font-style:italic;font-size:1.15em}
+.names .en-script{margin-top:12px}
+.venue-en{margin-top:2px}
+.venue-city{margin-bottom:4px}
+
+/* ================= v2: garlands & florals ================= */
+.swag{display:block;width:100%;max-width:1100px;margin:0 auto;pointer-events:none;position:relative;z-index:2}
+.invite .swag,.closing .swag{margin:-56px auto 30px}
+.swag-wrap{padding:0 var(--gut)}
+.swag-wrap .swag{margin:10px auto -26px}
+.hero{padding-top:0}
+.swag-hero{width:max(calc(100% + 32px),520px);max-width:none;margin:0;flex:none}
+.strand{position:absolute;top:0;width:28px;height:auto;pointer-events:none;z-index:3;transform-origin:50% 0;
+  animation:sway 5.5s ease-in-out infinite;filter:drop-shadow(0 6px 6px rgba(122,60,20,.15))}
+.strand-l{left:8px}
+.strand-r{right:8px;animation-delay:-2.7s}
+@keyframes sway{0%,100%{rotate:-1.8deg}50%{rotate:1.8deg}}
+.frame{padding-top:96px;overflow:visible}
+.flora{position:absolute;top:-14px;width:min(36%,210px);pointer-events:none;z-index:1;
+  filter:drop-shadow(0 6px 10px rgba(122,60,20,.12));transform-origin:0 0;animation:flora 8s ease-in-out infinite}
+.flora-tl{left:-10px}
+.flora-tr{right:-10px;transform:scaleX(-1);transform-origin:50% 0;animation-name:flora-r}
+@keyframes flora{0%,100%{rotate:0deg}50%{rotate:1.2deg}}
+@keyframes flora-r{0%,100%{rotate:0deg}50%{rotate:-1.2deg}}
+.frame>*:not(.flora):not(.corner){position:relative;z-index:2}
+.corner.br{transform:scaleX(-1)}
+
+/* ================= v2: floating + parallax ================= */
+.par{transform:translate3d(0,var(--py,0px),0);will-change:transform}
+.par.reveal,.par.reveal.in{transform:translate3d(0,var(--py,0px),0)}
+.float{animation:floaty 7s ease-in-out infinite}
+.float-slow{animation:floaty-r 9s ease-in-out infinite}
+@keyframes floaty{0%,100%{translate:0 0}50%{translate:0 -10px}}
+@keyframes floaty-r{0%,100%{translate:0 0;rotate:0deg}50%{translate:0 -9px;rotate:.7deg}}
+.arch-wrap{position:relative;width:min(78vw,380px);margin:0 auto}
+.arch{width:100%}
+.strand-arch-l{left:-36px;top:34px;width:24px}
+.strand-arch-r{right:-36px;top:34px;width:24px;animation-delay:-2s}
+@media (prefers-reduced-motion:reduce){.float,.float-slow,.strand,.flora,.mandala,.sun-rays{animation:none}}
+
+/* ================= v2: parrot ================= */
+.parrot{--pw:60px;position:fixed;left:0;top:0;width:var(--pw);height:calc(var(--pw) * 1.04);z-index:45;
+  pointer-events:none;opacity:0;transition:opacity .6s ease;will-change:transform}
+.parrot.on{opacity:1}
+.parrot>*{transform:scaleX(var(--fx,1))}
+.parrot-fly{position:absolute;inset:0;background:url(assets/img/parrot-fly.webp?v=2) 0 0/400% 100% no-repeat;transition:opacity .25s}
+.parrot-perch{position:absolute;left:14%;bottom:-18%;width:72%;opacity:0;transition:opacity .3s}
+.parrot.rest .parrot-fly{opacity:0}
+.parrot.rest .parrot-perch{opacity:1;animation:perch 3.2s ease-in-out infinite}
+@keyframes perch{0%,100%{rotate:0deg}50%{rotate:-4deg}}
+
+@media (min-width:900px){
+  .swag-hero{width:min(100%,1300px)}
+  .hero{flex-wrap:wrap;align-content:flex-start;padding-bottom:60px}
+  .hero .swag-hero{flex-basis:100%;margin:0 auto}
+  .strand{width:44px}
+  .strand-l{left:4vw}.strand-r{right:4vw}
+  .invite .swag,.closing .swag{margin:-70px auto 40px}
+  .frame{padding-top:120px}
+  .flora{width:min(34%,250px)}
+  .strand-arch-l{left:-64px;width:34px}.strand-arch-r{right:-64px;width:34px}
+  .parrot{--pw:104px}
+}
+
+/* garlands hung on things */
+.swag-wrap{position:relative;z-index:3;padding:0 calc(var(--gut) - 6px)}
+.swag-wrap .swag{margin:24px auto -64px;filter:drop-shadow(0 8px 10px rgba(122,60,20,.16))}
+.details{padding-top:40px}
+.closing{padding-top:84px}
+.swag-arch{position:absolute;top:-8px;left:50%;width:132%;max-width:none;margin:0;transform:translateX(-50%);z-index:4;
+  filter:drop-shadow(0 8px 10px rgba(122,60,20,.18))}
+.strand-arch-l,.strand-arch-r{top:20px}
+@media (min-width:900px){
+  .swag-wrap .swag{max-width:1000px;margin:40px auto -96px}
+  .details{padding-top:60px}
+  .closing{padding-top:120px}
+  .swag-arch{top:-14px}
+  .lotus-border img{width:min(100%,1200px);margin-left:50%}
+}
+
+.btn-en{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:19px;letter-spacing:.14em;text-transform:uppercase;padding:12px 34px}
+.gate{cursor:pointer}
+@media (min-aspect-ratio:1/1){.gate .btn-en{font-size:max(14px,min(19px,3svh))}}
+@media (max-aspect-ratio:1/1) and (max-height:700px){
+  .gate-inner{margin-top:5svh}
+  .gate-title{font-size:clamp(36px,10.5vw,60px);margin-top:10px}
+  .gate-date{margin-bottom:16px}
 }

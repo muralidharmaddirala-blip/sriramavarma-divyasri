@@ -84,9 +84,9 @@
     document.body.classList.remove('locked');
     window.scrollTo(0, 0);
     shower(innerWidth > 900 ? 140 : 90, 7000);
-    setTimeout(function () { gate.remove(); checkReveal(); }, 1900);
+    setTimeout(function () { gate.remove(); checkReveal(); startBird(); }, 1900);
   }
-  document.getElementById('openBtn').addEventListener('click', openGate);
+  gate.addEventListener('click', openGate);
 
   /* ---------- reveal ---------- */
   var items = [].slice.call(document.querySelectorAll('.reveal'));
@@ -132,34 +132,86 @@
   }
   tick();
 
-  /* ---------- calendar ---------- */
-  document.getElementById('icsBtn').addEventListener('click', function () {
-    var ics = [
-      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//SriRamaVarma-DivyaSri//Engagement//TE', 'CALSCALE:GREGORIAN',
-      'BEGIN:VEVENT',
-      'UID:sriramavarma-divyasri-20261111@invite',
-      'DTSTAMP:20261109T000000Z',
-      'DTSTART:20261111T044400Z',
-      'DTEND:20261111T083000Z',
-      'SUMMARY:శ్రీ రామ వర్మ & దివ్య శ్రీ నిశ్చితార్థ మహోత్సవం',
-      'DESCRIPTION:సుముహూర్తం ఉదయం 10:14\\nవిందు భోజనం మధ్యాహ్నం 12:30 నుండి',
-      'LOCATION:కళ్యాణి హైట్స్\\, ఏలూరు',
-      'BEGIN:VALARM', 'TRIGGER:-PT2H', 'ACTION:DISPLAY', 'DESCRIPTION:నిశ్చితార్థ మహోత్సవం', 'END:VALARM',
-      'END:VEVENT', 'END:VCALENDAR'
-    ].join('\r\n');
-    var blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
-    var a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'SriRamaVarma-DivyaSri-Engagement.ics';
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
-  });
+  /* ---------- parallax ---------- */
+  var pars = [].slice.call(document.querySelectorAll('[data-par]'));
+  var parQueued = false;
+  function parallax() {
+    parQueued = false;
+    var vh = innerHeight;
+    pars.forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.bottom < -200 || r.top > vh + 200) return;
+      var c = r.top + r.height / 2 - vh / 2;
+      el.style.setProperty('--py', (c * parseFloat(el.getAttribute('data-par'))).toFixed(1) + 'px');
+    });
+  }
+  if (!reduced) {
+    addEventListener('scroll', function () { if (!parQueued) { parQueued = true; requestAnimationFrame(parallax); } }, { passive: true });
+    addEventListener('resize', parallax);
+    parallax();
+  }
 
-  /* ---------- share ---------- */
-  document.getElementById('shareBtn').addEventListener('click', function () {
-    var url = location.href.split('#')[0];
-    var text = 'చి|| చల్లగాలి శ్రీ రామ వర్మ & చి||ల||సౌ|| అంబటి దివ్య శ్రీ నిశ్చితార్థ మహోత్సవానికి సాదర ఆహ్వానం 🌸\nనవంబర్ 11, 2026 · ఉదయం 10:14 · కళ్యాణి హైట్స్, ఏలూరు\n' + url;
-    window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank', 'noopener');
-  });
+  /* ---------- parrot: flies only while you scroll, perches at the edge when you stop ---------- */
+  var parrot = document.getElementById('parrot');
+  var fly = parrot.querySelector('.parrot-fly');
+  var cur = { x: 0, y: 0 }, tgt = { x: 0, y: 0 };
+  var frameN = 0, acc = 0, lastY = scrollY, idleT = null, resting = false, facing = -1, birdOn = false, looping = false;
+
+  function setFrame(n) { frameN = n % 4; fly.style.backgroundPosition = (frameN * 100 / 3) + '% 0'; }
+  function pathTarget() {
+    var max = document.documentElement.scrollHeight - innerHeight;
+    var p = max > 0 ? Math.min(1, Math.max(0, scrollY / max)) : 0;
+    var w = parrot.offsetWidth, minX = 6, maxX = innerWidth - w - 6;
+    return {
+      x: minX + (maxX - minX) * (0.5 - 0.5 * Math.cos(p * Math.PI * 7)),
+      y: innerHeight * (0.14 + 0.5 * (0.5 - 0.5 * Math.cos(p * Math.PI * 11 + 1.2)))
+    };
+  }
+  function place() {
+    parrot.style.transform = 'translate3d(' + cur.x.toFixed(1) + 'px,' + cur.y.toFixed(1) + 'px,0)';
+    parrot.style.setProperty('--fx', facing);
+  }
+  function loop() {
+    var dx = tgt.x - cur.x, dy = tgt.y - cur.y;
+    cur.x += dx * 0.09; cur.y += dy * 0.09;
+    if (!resting && Math.abs(dx) > 1.5) facing = dx > 0 ? 1 : -1;
+    place();
+    if (Math.abs(dx) > 0.4 || Math.abs(dy) > 0.4) requestAnimationFrame(loop);
+    else looping = false;
+  }
+  function kick() { if (!looping) { looping = true; requestAnimationFrame(loop); } }
+  function rest() {
+    resting = true;
+    var w = parrot.offsetWidth;
+    var left = cur.x + w / 2 < innerWidth / 2;
+    tgt.x = left ? 6 : innerWidth - w - 6;
+    facing = left ? 1 : -1;
+    parrot.classList.add('rest');
+    kick();
+  }
+  function onBirdScroll() {
+    if (!birdOn) return;
+    var d = Math.abs(scrollY - lastY); lastY = scrollY;
+    acc += d;
+    while (acc > 16) { acc -= 16; setFrame(frameN + 1); }
+    if (resting) { resting = false; parrot.classList.remove('rest'); }
+    tgt = pathTarget();
+    kick();
+    clearTimeout(idleT);
+    idleT = setTimeout(rest, 450);
+  }
+  function startBird() {
+    birdOn = true;
+    lastY = scrollY;
+    cur = { x: innerWidth - parrot.offsetWidth - 6, y: innerHeight * 0.3 };
+    tgt = pathTarget();
+    place();
+    parrot.classList.add('on');
+    if (reduced) { rest(); return; }
+    var n = 0, t = setInterval(function () { setFrame(frameN + 1); if (++n > 14) clearInterval(t); }, 85);
+    kick();
+    idleT = setTimeout(rest, 1300);
+  }
+  addEventListener('scroll', onBirdScroll, { passive: true });
+  addEventListener('resize', function () { if (birdOn) { tgt = resting ? tgt : pathTarget(); if (resting) rest(); } });
 })();
